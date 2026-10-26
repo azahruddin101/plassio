@@ -2,6 +2,7 @@ import { Cormorant_Garamond, Lato, Playfair_Display } from "next/font/google";
 import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import WhatsAppFab from "@/components/layout/WhatsAppFab";
+import SmoothScroll from "@/components/providers/SmoothScroll";
 import { ogImage, site } from "@/lib/content";
 import "./globals.css";
 
@@ -87,9 +88,12 @@ export default function RootLayout({ children }) {
         </a>
         <SiteHeader />
         <div id="page-scroll" className="min-h-0 flex-1 overflow-y-auto">
-          <main id="main">{children}</main>
-          <SiteFooter />
+          <div id="page-content">
+            <main id="main">{children}</main>
+            <SiteFooter />
+          </div>
         </div>
+        <SmoothScroll />
         <WhatsAppFab />
       </body>
     </html>

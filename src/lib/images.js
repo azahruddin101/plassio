@@ -181,17 +181,55 @@ export const arrivalPhotos = [
 
 const tag = (category, items) => items.map((item) => ({ ...item, category }));
 
+// Gallery tile shapes: "large" (2x2), "wide" (2x1), "tall" (1x2); anything not
+// listed is "small" (1x1), except portrait photos, which are always "tall".
+const gallerySpans = new Map([
+  [exteriorSunset, "large"],
+  [exteriorDusk, "tall"],
+  [exteriorDuskWide, "tall"],
+  [exteriorDayGarden, "wide"],
+  [lobbyStaircase, "large"],
+  [receptionDesk, "wide"],
+  [corridorFlowers, "tall"],
+  [corridorPlants, "tall"],
+  [corridorLong, "tall"],
+  [roomRoyalWindow, "large"],
+  [roomRoyalCurtains, "tall"],
+  [roomPresidentialWide, "wide"],
+  [roomPresidentialSuite, "wide"],
+  [roomDeluxeDressing, "large"],
+  [roomDeluxeWorkDesk, "tall"],
+  [roomStandardFront, "tall"],
+  [roomStandardBed, "wide"],
+  [bathRoyal, "wide"],
+  [restaurantHall, "large"],
+  [restaurantDining, "wide"],
+  [ballroom, "large"],
+  [wedding, "wide"],
+]);
+
+// Round-robin across room types so near-identical angles of one room never sit side by side.
+const interleave = (lists) =>
+  Array.from({ length: Math.max(...lists.map((list) => list.length)) }, (_, i) =>
+    lists.map((list) => list[i]).filter(Boolean),
+  ).flat();
+
+const withSpan = (item) => ({
+  ...item,
+  span: gallerySpans.get(item.src) ?? (item.src.height > item.src.width ? "tall" : "small"),
+});
+
 export const galleryImages = [
   ...tag("exterior", [
     shot(exteriorSunset, "Hotel Palassio International at sunset"),
-    shot(exteriorDusk, "Hotel facade with warm lighting at dusk"),
-    shot(exteriorDuskWide, "Hotel Palassio International at twilight"),
-    shot(exteriorDuskStreet, "Hotel entrance lit up in the evening"),
     shot(exteriorDayFront, "Hotel Palassio International, Gomti Nagar Extension"),
-    shot(exteriorDayGarden, "Hotel facade with landscaped frontage"),
-    shot(exteriorDay, "Hotel exterior on a clear day"),
-    shot(exteriorDaySide, "Side view of the hotel building"),
     shot(entranceSteps, "Main entrance steps lined with plants"),
+    shot(exteriorDayGarden, "Hotel facade with landscaped frontage"),
+    shot(exteriorDusk, "Hotel facade with warm lighting at dusk"),
+    shot(exteriorDay, "Hotel exterior on a clear day"),
+    shot(exteriorDuskStreet, "Hotel entrance lit up in the evening"),
+    shot(exteriorDaySide, "Side view of the hotel building"),
+    shot(exteriorDuskWide, "Hotel Palassio International at twilight"),
   ]),
   ...tag("lobby", [
     shot(receptionDesk, "Reception desk"),
@@ -207,12 +245,15 @@ export const galleryImages = [
     shot(corridorLong, "Guest room corridor"),
     shot(corridorRooms, "Corridor leading to guest rooms"),
   ]),
-  ...tag("rooms", [
-    ...roomPhotos.royal.slice(0, 6),
-    ...roomPhotos.presidential.slice(0, 6),
-    ...roomPhotos.deluxe.slice(0, 9),
-    ...roomPhotos.standard.slice(0, 9),
-  ]),
+  ...tag(
+    "rooms",
+    interleave([
+      roomPhotos.royal.slice(0, 6),
+      roomPhotos.presidential.slice(0, 6),
+      roomPhotos.deluxe.slice(0, 9),
+      roomPhotos.standard.slice(0, 9),
+    ]),
+  ),
   ...tag("bathrooms", [
     roomPhotos.royal[6],
     roomPhotos.royal[7],
@@ -235,7 +276,7 @@ export const galleryImages = [
     shot(rooftop, "Rooftop lounge sunset view"),
     shot(unplugged, "Friday unplugged acoustic night"),
   ]),
-];
+].map(withSpan);
 
 export function roomImage(id) {
   const map = {

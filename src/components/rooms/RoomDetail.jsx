@@ -23,7 +23,7 @@ export default function RoomDetail({ room, photos }) {
             className="object-cover"
           />
         </div>
-        <div className="flex gap-3 overflow-x-auto pb-1">
+        <div className="flex gap-3 overflow-x-auto pb-1" data-lenis-prevent-horizontal>
           {photos.map((photo, photoIndex) => (
             <button
               key={photo.src.src}

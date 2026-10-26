@@ -4,6 +4,15 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { galleryCategories } from "@/lib/content";
 
+// Grid placement and the matching `sizes` hint for each tile shape. Columns are
+// 2 / 3 / 4 at base / sm / lg, so a 2-column tile is full width on phones.
+const tileLayouts = {
+  small: { className: "", sizes: "(min-width: 1024px) 22vw, (min-width: 640px) 31vw, 46vw" },
+  tall: { className: "row-span-2", sizes: "(min-width: 1024px) 22vw, (min-width: 640px) 31vw, 46vw" },
+  wide: { className: "col-span-2", sizes: "(min-width: 1024px) 43vw, (min-width: 640px) 62vw, 92vw" },
+  large: { className: "col-span-2 row-span-2", sizes: "(min-width: 1024px) 43vw, (min-width: 640px) 62vw, 92vw" },
+};
+
 export default function GalleryGrid({ images }) {
   const [category, setCategory] = useState("all");
   const [active, setActive] = useState(null);
@@ -46,7 +55,7 @@ export default function GalleryGrid({ images }) {
                 setCategory(item.id);
                 setActive(null);
               }}
-              className={`rounded px-4 py-2 text-sm font-semibold ${
+              className={`rounded cursor-pointer px-4 py-2 text-sm font-semibold ${
                 selected ? "bg-[#633633] text-white" : "border border-[#ddd] bg-white text-[#633633]"
               }`}
             >
@@ -56,27 +65,34 @@ export default function GalleryGrid({ images }) {
         })}
       </div>
 
-      <div className="mx-auto mt-10 grid w-[92%] grid-cols-1 gap-5 sm:grid-cols-2 lg:w-[85%] lg:grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">
-        {photos.map((photo, index) => (
-          <button
-            key={`${photo.src.src}-${photo.category}`}
-            type="button"
-            aria-label={photo.alt}
-            className="relative h-[230px] overflow-hidden rounded-lg shadow-[0_5px_15px_rgba(0,0,0,0.2)]"
-            onClick={() => setActive(index)}
-          >
-            <Image
-              src={photo.src}
-              alt={photo.alt}
-              fill
-              quality={60}
-              placeholder="blur"
-              loading={index < 4 ? "eager" : "lazy"}
-              sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 92vw"
-              className="object-cover transition duration-500 hover:scale-105"
-            />
-          </button>
-        ))}
+      <div className="mx-auto mt-10 grid w-[92%] grid-flow-row-dense auto-rows-[140px] grid-cols-2 gap-3 sm:auto-rows-[170px] sm:grid-cols-3 sm:gap-4 lg:w-[85%] lg:auto-rows-[200px] lg:grid-cols-4 lg:gap-5">
+        {photos.map((photo, index) => {
+          const layout = tileLayouts[photo.span] ?? tileLayouts.small;
+          const big = photo.span === "large" || photo.span === "wide";
+          return (
+            <button
+              key={`${photo.src.src}-${photo.category}`}
+              type="button"
+              aria-label={photo.alt}
+              className={`group relative overflow-hidden rounded-lg shadow-[0_5px_15px_rgba(0,0,0,0.2)] ${layout.className}`}
+              onClick={() => setActive(index)}
+            >
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                fill
+                quality={big ? 75 : 60}
+                placeholder="blur"
+                loading={index < 6 ? "eager" : "lazy"}
+                sizes={layout.sizes}
+                className="object-cover transition duration-500 group-hover:scale-105"
+              />
+              <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pt-8 pb-2.5 text-left text-xs text-white opacity-0 transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 sm:text-sm">
+                {photo.alt}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       {active !== null && photos[active] ? (

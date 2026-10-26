@@ -8,12 +8,7 @@ import Logo from "./Logo";
 import SocialIcons from "./SocialIcons";
 import { headerMenu, logoSrc, site } from "@/lib/content";
 import Image from "next/image";
-
-function scrollToTop() {
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const scroller = document.getElementById("page-scroll");
-  (scroller || window).scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
-}
+import { scrollPageToTop as scrollToTop } from "@/components/providers/SmoothScroll";
 
 function childActive(pathname, href) {
   return pathname === href;
