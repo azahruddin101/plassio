@@ -41,7 +41,7 @@ export default function HomePage() {
               <h2 className="mb-8 text-3xl font-semibold tracking-wide text-[#633633] md:text-4xl">{homeIntro.heading}</h2>
               {homeIntro.paragraphs.map((paragraph) => (
                 <p key={paragraph.slice(0, 24)} className="mb-6 text-base leading-relaxed text-gray-800">
-                  {paragraph}
+                   {paragraph}
                 </p>
               ))}
               <p className="text-base leading-relaxed text-gray-800">
