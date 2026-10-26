@@ -22,7 +22,7 @@ export default function DiningPage() {
       </div>
       <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
         <div className="overflow-hidden rounded-[14px]">
-          <Image src={photos.dining} alt="Dining at Hotel Palassio International" width={1200} height={800} className="h-80 w-full object-cover lg:h-full" />
+          <Image src={photos.restaurantHall} alt="Restaurant hall with crystal chandeliers at Hotel Palassio International" loading="eager" fetchPriority="high" placeholder="blur" sizes="(min-width: 1152px) 470px, (min-width: 1024px) 42vw, 100vw" className="h-80 w-full object-cover lg:h-full" />
         </div>
         <div className="rounded-[14px] border border-[#eee] bg-white p-6 shadow-[0_8px_28px_rgba(0,0,0,0.08)]">
           <h2 className="text-3xl font-semibold text-[#633633]">Signature Culinary Menu</h2>
@@ -45,7 +45,7 @@ export default function DiningPage() {
         </div>
       </div>
       <div className="mt-8 overflow-hidden rounded-[14px]">
-        <Image src={photos.biryani} alt="Awadhi Dum Biryani and Galawati Kebabs" width={1400} height={800} className="h-72 w-full object-cover" />
+        <Image src={photos.biryani} alt="Awadhi Dum Biryani and Galawati Kebabs" placeholder="blur" sizes="(min-width: 1152px) 1120px, 100vw" className="h-72 w-full object-cover" />
       </div>
     </ContentPage>
   );

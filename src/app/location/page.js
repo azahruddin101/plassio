@@ -1,5 +1,7 @@
+import Image from "next/image";
 import ContentPage from "@/components/layout/ContentPage";
 import { landmarks, site } from "@/lib/content";
+import { arrivalPhotos } from "@/lib/images";
 
 export const metadata = {
   title: "Location & Directions",
@@ -31,6 +33,14 @@ export default function LocationPage() {
           <iframe title="Map to Hotel Palassio International" src={site.mapsEmbed} className="h-full w-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
         </div>
       </div>
+      <h2 className="mt-12 mb-4 text-2xl font-semibold text-[#633633]">Arriving at the hotel</h2>
+      <ul className="grid gap-4 sm:grid-cols-3">
+        {arrivalPhotos.map((photo) => (
+          <li key={photo.src.src} className="relative h-56 overflow-hidden rounded-[14px]">
+            <Image src={photo.src} alt={photo.alt} fill placeholder="blur" sizes="(min-width: 1152px) 363px, (min-width: 640px) 33vw, 100vw" className="object-cover" />
+          </li>
+        ))}
+      </ul>
     </ContentPage>
   );
 }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Check } from "lucide-react";
 import { formatInr, overviewRooms, rooms } from "@/lib/content";
+import { photos } from "@/lib/images";
 
 export default function RoomCatalog() {
   return (
@@ -25,10 +26,10 @@ export default function RoomCatalog() {
             <div className="flex flex-col items-start gap-4 sm:flex-row">
               <div className="w-full shrink-0 overflow-hidden rounded-[10px] sm:w-[38%] sm:max-w-[240px]">
                 <Image
-                  src={room.image}
+                  src={photos[room.image]}
                   alt={room.title}
-                  width={480}
-                  height={360}
+                  placeholder="blur"
+                  sizes="(min-width: 640px) 240px, 92vw"
                   className="aspect-[4/3] w-full object-cover transition duration-500 hover:scale-105"
                 />
               </div>

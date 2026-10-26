@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import PageBanner from "@/components/layout/PageBanner";
 import RoomDetail from "@/components/rooms/RoomDetail";
 import { detailRooms, site } from "@/lib/content";
+import { roomPhotos } from "@/lib/images";
 
 export function generateStaticParams() {
   return [{ id: "1" }, { id: "2" }, { id: "3" }, { id: "4" }];
@@ -35,7 +36,7 @@ async function RoomInterior({ params }) {
   return (
     <div className="font-arial bg-[#f4f4f4]">
       <PageBanner title="DETAIL ROOM INTERIOR" crumb="DETAIL ROOM INTERIOR" />
-      <RoomDetail room={room} />
+      <RoomDetail room={room} photos={roomPhotos[room.photoSet]} />
     </div>
   );
 }

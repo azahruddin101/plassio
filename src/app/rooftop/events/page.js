@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ContentPage from "@/components/layout/ContentPage";
 import { rooftopEvents } from "@/lib/content";
+import { photos } from "@/lib/images";
 
 export const metadata = {
   title: "Rooftop Events & DJ Nights",
@@ -14,7 +15,7 @@ export default function RooftopEventsPage() {
       <div className="grid gap-6 md:grid-cols-2">
         {rooftopEvents.map((event) => (
           <article key={event.title} className="overflow-hidden rounded-[14px] border border-[#eee] bg-white shadow-[0_8px_28px_rgba(0,0,0,0.08)]">
-            <Image src={event.image} alt={event.title} width={1000} height={640} className="h-56 w-full object-cover" />
+            <Image src={photos[event.image]} alt={event.title} placeholder="blur" sizes="(min-width: 1152px) 548px, (min-width: 768px) 50vw, 100vw" className="h-56 w-full object-cover" />
             <div className="p-6">
               <p className="text-xs font-semibold tracking-[0.18em] text-[#DE9C33] uppercase">{event.when}</p>
               <p className="mt-2 text-sm text-gray-600">{event.time}</p>

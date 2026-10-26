@@ -23,7 +23,7 @@ export default function CorporatePage() {
       intro="Tailored corporate room tariff agreements, GST compliant invoicing, high-speed Wi-Fi, ergonomically designed work desks, and AV-equipped conference halls for corporate delegations in Lucknow."
     >
       <div className="mb-8 overflow-hidden rounded-[14px]">
-        <Image src={photos.corporate} alt="Corporate meeting space at Hotel Palassio International" width={1400} height={800} className="h-72 w-full object-cover" />
+        <Image src={photos.workDesk} alt="Work desk with TV and tea station in a guest room at Hotel Palassio International" loading="eager" fetchPriority="high" placeholder="blur" sizes="(min-width: 1152px) 1120px, 100vw" className="h-72 w-full object-cover" />
       </div>
       <div className="mb-8 text-center">
         <Link href="/contact" className={greenButton}>Request corporate rates</Link>

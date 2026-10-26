@@ -33,7 +33,7 @@ async function HallDetails({ params }) {
     <ContentPage title={hall.name.toUpperCase()}>
       <article className="grid gap-8 lg:grid-cols-2">
         <div className="overflow-hidden rounded-[14px]">
-          <Image src={photos[hall.image]} alt={hall.name} width={1200} height={800} className="h-full min-h-72 w-full object-cover" />
+          <Image src={photos[hall.image]} alt={hall.name} loading="eager" fetchPriority="high" placeholder="blur" sizes="(min-width: 1152px) 544px, (min-width: 1024px) 50vw, 100vw" className="h-full min-h-72 w-full object-cover" />
         </div>
         <div className="rounded-[14px] border border-[#eee] bg-white p-6 shadow-[0_8px_28px_rgba(0,0,0,0.08)]">
           <p className="text-sm"><Link href="/banquets" className="font-semibold text-[#633633] underline">All banquet halls</Link></p>

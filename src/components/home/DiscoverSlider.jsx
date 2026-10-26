@@ -3,36 +3,40 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { discoverSlides } from "@/lib/images";
+import { useSlideWindow } from "@/lib/use-slide-window";
 
-export default function DiscoverSlider() {
+export default function DiscoverSlider({ slides }) {
   const [index, setIndex] = useState(0);
+  const shouldRender = useSlideWindow(index, slides.length);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (media.matches) return undefined;
     const timer = setInterval(() => {
-      setIndex((current) => (current + 1) % discoverSlides.length);
+      setIndex((current) => (current + 1) % slides.length);
     }, 4000);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
-  const go = (next) => setIndex((next + discoverSlides.length) % discoverSlides.length);
+  const go = (next) => setIndex((next + slides.length) % slides.length);
 
   return (
     <div className="relative h-[350px] overflow-hidden md:h-[425px] md:w-1/2" aria-roledescription="carousel" aria-label="Resort gallery">
-      {discoverSlides.map((slide, slideIndex) => (
-        <Image
-          key={slide.src}
-          src={slide.src}
-          alt={index === slideIndex ? slide.alt : ""}
-          fill
-          sizes="(min-width: 768px) 50vw, 100vw"
-          className="object-cover transition-opacity duration-700"
-          style={{ opacity: index === slideIndex ? 1 : 0 }}
-          aria-hidden={index !== slideIndex}
-        />
-      ))}
+      {slides.map((slide, slideIndex) =>
+        shouldRender(slideIndex) ? (
+          <Image
+            key={slide.src.src}
+            src={slide.src}
+            alt={index === slideIndex ? slide.alt : ""}
+            fill
+            placeholder="blur"
+            sizes="(min-width: 768px) 50vw, 100vw"
+            className="object-cover transition-opacity duration-700"
+            style={{ opacity: index === slideIndex ? 1 : 0 }}
+            aria-hidden={index !== slideIndex}
+          />
+        ) : null,
+      )}
       <button
         type="button"
         aria-label="Previous photograph"

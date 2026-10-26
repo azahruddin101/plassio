@@ -2,7 +2,7 @@ import { Cormorant_Garamond, Lato, Playfair_Display } from "next/font/google";
 import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import WhatsAppFab from "@/components/layout/WhatsAppFab";
-import { site } from "@/lib/content";
+import { ogImage, site } from "@/lib/content";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -40,10 +40,10 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/images/palassio/exterior.jpg",
-        width: 1600,
-        height: 1067,
-        alt: "Hotel Palassio International",
+        url: ogImage,
+        width: 1200,
+        height: 630,
+        alt: "Hotel Palassio International at sunset",
       },
     ],
   },
@@ -55,7 +55,7 @@ const lodgingJsonLd = {
   "@type": "LodgingBusiness",
   name: site.name,
   url: "https://palassio-min.onrender.com",
-  image: "https://palassio-min.onrender.com/images/palassio/exterior.jpg",
+  image: `https://palassio-min.onrender.com${ogImage}`,
   telephone: site.phoneDisplay,
   email: site.email,
   address: {

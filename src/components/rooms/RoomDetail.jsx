@@ -3,28 +3,39 @@
 import { useState } from "react";
 import Image from "next/image";
 
-export default function RoomDetail({ room }) {
-  const [active, setActive] = useState(room.images[0]);
+export default function RoomDetail({ room, photos }) {
+  const [active, setActive] = useState(0);
+  const current = photos[active];
 
   return (
     <div className="mx-auto flex w-[92%] max-w-6xl flex-col items-start gap-8 py-10 lg:w-[85%] lg:flex-row lg:gap-12 lg:py-16">
       <div className="w-full min-w-0 lg:flex-1">
         <div className="relative mb-4 h-[240px] overflow-hidden rounded-[10px] shadow-[0_12px_30px_rgba(0,0,0,0.25)] sm:h-[360px] lg:h-[450px]">
-          <Image src={active} alt={room.title} fill sizes="(min-width: 1024px) 720px, 100vw" className="object-cover" />
+          <Image
+            key={current.src.src}
+            src={current.src}
+            alt={current.alt}
+            fill
+            loading="eager"
+            fetchPriority={active === 0 ? "high" : "auto"}
+            placeholder="blur"
+            sizes="(min-width: 1360px) 690px, (min-width: 1024px) 45vw, 92vw"
+            className="object-cover"
+          />
         </div>
-        <div className="flex gap-3 overflow-x-auto">
-          {room.images.map((src) => (
+        <div className="flex gap-3 overflow-x-auto pb-1">
+          {photos.map((photo, photoIndex) => (
             <button
-              key={src}
+              key={photo.src.src}
               type="button"
-              onClick={() => setActive(src)}
-              aria-label={`Show ${room.title} photograph`}
-              aria-pressed={active === src}
+              onClick={() => setActive(photoIndex)}
+              aria-label={`Show photograph ${photoIndex + 1}: ${photo.alt}`}
+              aria-pressed={active === photoIndex}
               className={`relative h-20 w-[110px] shrink-0 overflow-hidden rounded-md border-2 ${
-                active === src ? "border-[#e0a24a]" : "border-[#ddd]"
+                active === photoIndex ? "border-[#e0a24a]" : "border-[#ddd]"
               }`}
             >
-              <Image src={src} alt="" fill sizes="110px" className="object-cover" />
+              <Image src={photo.src} alt="" fill quality={60} placeholder="blur" sizes="110px" className="object-cover" />
             </button>
           ))}
         </div>

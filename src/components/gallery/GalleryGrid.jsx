@@ -3,16 +3,15 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { galleryCategories } from "@/lib/content";
-import { galleryImages } from "@/lib/images";
 
-export default function GalleryGrid() {
+export default function GalleryGrid({ images }) {
   const [category, setCategory] = useState("all");
   const [active, setActive] = useState(null);
 
   const photos = useMemo(() => {
-    if (category === "all") return galleryImages;
-    return galleryImages.filter((photo) => photo.category === category);
-  }, [category]);
+    if (category === "all") return images;
+    return images.filter((photo) => photo.category === category);
+  }, [category, images]);
 
   useEffect(() => {
     if (active === null) return undefined;
@@ -24,6 +23,14 @@ export default function GalleryGrid() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [active, photos.length]);
+
+  // Warm the cache for the photos the lightbox arrows lead to, so paging is instant.
+  const neighbors =
+    active === null
+      ? []
+      : [...new Set([(active + 1) % photos.length, (active - 1 + photos.length) % photos.length])]
+          .filter((neighbor) => neighbor !== active)
+          .map((neighbor) => photos[neighbor]);
 
   return (
     <>
@@ -52,7 +59,7 @@ export default function GalleryGrid() {
       <div className="mx-auto mt-10 grid w-[92%] grid-cols-1 gap-5 sm:grid-cols-2 lg:w-[85%] lg:grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">
         {photos.map((photo, index) => (
           <button
-            key={`${photo.src}-${photo.category}-${index}`}
+            key={`${photo.src.src}-${photo.category}`}
             type="button"
             aria-label={photo.alt}
             className="relative h-[230px] overflow-hidden rounded-lg shadow-[0_5px_15px_rgba(0,0,0,0.2)]"
@@ -62,6 +69,9 @@ export default function GalleryGrid() {
               src={photo.src}
               alt={photo.alt}
               fill
+              quality={60}
+              placeholder="blur"
+              loading={index < 4 ? "eager" : "lazy"}
               sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 92vw"
               className="object-cover transition duration-500 hover:scale-105"
             />
@@ -83,12 +93,28 @@ export default function GalleryGrid() {
             ❮
           </button>
           <Image
+            key={photos[active].src.src}
             src={photos[active].src}
             alt={photos[active].alt}
-            width={1400}
-            height={900}
+            quality={85}
+            loading="eager"
+            placeholder="blur"
+            sizes="85vw"
             className="max-h-[80vh] w-auto max-w-[85%] rounded-lg object-contain"
           />
+          {neighbors.map((photo) => (
+            <Image
+              key={`preload-${photo.src.src}`}
+              src={photo.src}
+              alt=""
+              aria-hidden="true"
+              quality={85}
+              loading="eager"
+              fetchPriority="low"
+              sizes="85vw"
+              className="hidden"
+            />
+          ))}
           <button
             type="button"
             className="absolute right-4 text-5xl text-white sm:right-10"

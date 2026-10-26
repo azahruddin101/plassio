@@ -14,6 +14,8 @@ export default function RoomCard({ room, showDetails = true }) {
           src={roomImage(room.id)}
           alt={room.title}
           fill
+          placeholder="blur"
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           className="object-cover"
         />
       </div>

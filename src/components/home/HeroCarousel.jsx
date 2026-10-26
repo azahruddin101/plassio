@@ -3,42 +3,47 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { heroSlides } from "@/lib/images";
 import { site } from "@/lib/content";
+import { useSlideWindow } from "@/lib/use-slide-window";
 
-export default function HeroCarousel() {
+export default function HeroCarousel({ slides }) {
   const [index, setIndex] = useState(0);
+  const shouldRender = useSlideWindow(index, slides.length);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (media.matches) return undefined;
     const timer = setInterval(() => {
-      setIndex((current) => (current + 1) % heroSlides.length);
+      setIndex((current) => (current + 1) % slides.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   const go = (next) => {
-    setIndex((next + heroSlides.length) % heroSlides.length);
+    setIndex((next + slides.length) % slides.length);
   };
 
   return (
     <section className="hero-section" aria-roledescription="carousel" aria-label="Resort photographs">
-      {heroSlides.map((slide, slideIndex) => (
+      {slides.map((slide, slideIndex) => (
         <div
-          key={slide.src}
+          key={slide.src.src}
           className="hero-slide"
           style={{ opacity: index === slideIndex ? 1 : 0 }}
           aria-hidden={index !== slideIndex}
         >
-          <Image
-            src={slide.src}
-            alt={index === slideIndex ? slide.alt : ""}
-            fill
-            priority={slideIndex === 0}
-            sizes="100vw"
-            className="object-cover object-center"
-          />
+          {shouldRender(slideIndex) ? (
+            <Image
+              src={slide.src}
+              alt={index === slideIndex ? slide.alt : ""}
+              fill
+              preload={slideIndex === 0}
+              fetchPriority={slideIndex === 0 ? undefined : "low"}
+              placeholder="blur"
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+          ) : null}
         </div>
       ))}
       <div className="hero-overlay">
@@ -55,9 +60,9 @@ export default function HeroCarousel() {
         <ChevronRight className="h-1/2 w-1/2" />
       </button>
       <div className="hero-dots">
-        {heroSlides.map((slide, slideIndex) => (
+        {slides.map((slide, slideIndex) => (
           <button
-            key={slide.src}
+            key={slide.src.src}
             type="button"
             className="hero-dot"
             aria-label={`Show slide ${slideIndex + 1}`}

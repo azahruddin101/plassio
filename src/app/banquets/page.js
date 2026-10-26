@@ -16,9 +16,9 @@ export default function BanquetsPage() {
       intro="Pillarless architectural spaces equipped with high ceilings, sound systems, green rooms, and dedicated dining zones for weddings, conventions, and private celebrations."
     >
       <div className="space-y-8">
-        {halls.map((hall) => (
+        {halls.map((hall, hallIndex) => (
           <article key={hall.id} className="grid overflow-hidden rounded-[14px] border border-[#eee] bg-white shadow-[0_8px_28px_rgba(0,0,0,0.08)] md:grid-cols-2">
-            <Image src={photos[hall.image]} alt={hall.name} width={1200} height={800} className="h-full min-h-64 w-full object-cover" />
+            <Image src={photos[hall.image]} alt={hall.name} loading={hallIndex === 0 ? "eager" : "lazy"} placeholder="blur" sizes="(min-width: 1152px) 560px, (min-width: 768px) 50vw, 100vw" className="h-full min-h-64 w-full object-cover" />
             <div className="space-y-3 p-6">
               <p className="text-sm font-semibold text-[#DE9C33]">Capacity: {hall.capacity}</p>
               <h2 className="text-3xl font-semibold text-[#633633]">{hall.name}</h2>

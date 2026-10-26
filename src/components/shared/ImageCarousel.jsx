@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSlideWindow } from "@/lib/use-slide-window";
 
 export default function ImageCarousel({
   slides,
@@ -11,8 +12,10 @@ export default function ImageCarousel({
   aspectClass = "aspect-[16/10]",
   autoPlay = true,
   intervalMs = 5000,
+  sizes = "100vw",
 }) {
   const [index, setIndex] = useState(0);
+  const shouldRender = useSlideWindow(index, slides.length);
 
   useEffect(() => {
     if (!autoPlay || slides.length <= 1) return;
@@ -25,18 +28,22 @@ export default function ImageCarousel({
   return (
     <div className={cn("relative overflow-hidden rounded-sm shadow-md", className)}>
       <div className={cn("relative w-full", aspectClass)}>
-        {slides.map((item, i) => (
-          <Image
-            key={item.src}
-            src={item.src}
-            alt={item.alt}
-            fill
-            className={cn(
-              "object-cover transition-opacity duration-700",
-              i === index ? "opacity-100" : "opacity-0",
-            )}
-          />
-        ))}
+        {slides.map((item, i) =>
+          shouldRender(i) ? (
+            <Image
+              key={item.src.src ?? item.src}
+              src={item.src}
+              alt={i === index ? item.alt : ""}
+              fill
+              placeholder={typeof item.src === "object" ? "blur" : "empty"}
+              sizes={sizes}
+              className={cn(
+                "object-cover transition-opacity duration-700",
+                i === index ? "opacity-100" : "opacity-0",
+              )}
+            />
+          ) : null,
+        )}
       </div>
 
       {slides.length > 1 && (

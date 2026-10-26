@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { banquetSlides } from "@/lib/images";
 import { banquetFeatures, restaurantFeatures } from "@/lib/content";
 
 function FeatureCard({ title, items }) {
@@ -21,10 +20,11 @@ function FeatureCard({ title, items }) {
   );
 }
 
-export default function BanquetShowcase() {
+export default function BanquetShowcase({ slides }) {
   const [index, setIndex] = useState(0);
   const [zoom, setZoom] = useState(null);
-  const count = banquetSlides.length;
+  const count = slides.length;
+  const current = slides[index];
 
   useEffect(() => {
     if (!zoom) return undefined;
@@ -49,14 +49,18 @@ export default function BanquetShowcase() {
         <button
           type="button"
           className="relative block h-[220px] w-full sm:h-[320px] lg:h-[420px]"
-          onClick={() => setZoom(banquetSlides[index].src)}
+          onClick={() => setZoom(current)}
           aria-label="Enlarge banquet photograph"
         >
           <Image
-            src={banquetSlides[index].src}
-            alt={banquetSlides[index].alt}
+            key={current.src.src}
+            src={current.src}
+            alt={current.alt}
             fill
-            sizes="85vw"
+            loading="eager"
+            fetchPriority={index === 0 ? "high" : "auto"}
+            placeholder="blur"
+            sizes="(min-width: 1024px) 80vw, 85vw"
             className="rounded-[10px] object-cover"
           />
         </button>
@@ -71,9 +75,9 @@ export default function BanquetShowcase() {
       </div>
 
       <div className="mt-4 flex flex-wrap justify-center gap-2.5">
-        {banquetSlides.map((slide, slideIndex) => (
+        {slides.map((slide, slideIndex) => (
           <button
-            key={`${slide.src}-${slideIndex}`}
+            key={slide.src.src}
             type="button"
             onClick={() => setIndex(slideIndex)}
             aria-label={`Show photograph ${slideIndex + 1}`}
@@ -82,7 +86,7 @@ export default function BanquetShowcase() {
               index === slideIndex ? "border-[#d4a041]" : "border-transparent"
             }`}
           >
-            <Image src={slide.src} alt="" fill sizes="120px" className="object-cover" />
+            <Image src={slide.src} alt="" fill quality={60} placeholder="blur" sizes="120px" className="object-cover" />
           </button>
         ))}
       </div>
@@ -104,10 +108,12 @@ export default function BanquetShowcase() {
             ✕
           </button>
           <Image
-            src={zoom}
-            alt="Enlarged banquet photograph"
-            width={1400}
-            height={900}
+            src={zoom.src}
+            alt={zoom.alt}
+            quality={85}
+            loading="eager"
+            placeholder="blur"
+            sizes="90vw"
             className="max-h-[90vh] w-auto max-w-[90%] rounded-[10px] object-contain"
           />
         </div>

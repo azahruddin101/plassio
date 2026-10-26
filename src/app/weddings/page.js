@@ -21,7 +21,7 @@ export default function WeddingsPage() {
       intro="Pillarless ballroom grandeur, live Awadhi galawati and biryani counters, presidential suite stays for newlyweds, and 14 guest rooms under one roof in Gomti Nagar Extension."
     >
       <div className="mb-8 overflow-hidden rounded-[14px]">
-        <Image src={photos.wedding} alt="Wedding reception at Hotel Palassio International" width={1400} height={800} className="h-80 w-full object-cover" />
+        <Image src={photos.wedding} alt="Wedding reception at Hotel Palassio International" loading="eager" fetchPriority="high" placeholder="blur" sizes="(min-width: 1152px) 1120px, 100vw" className="h-80 w-full object-cover" />
       </div>
       <div className="mb-8 text-center">
         <Link href="/contact" className={greenButton}>Plan your wedding</Link>

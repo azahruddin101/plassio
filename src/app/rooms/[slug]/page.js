@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import PageBanner from "@/components/layout/PageBanner";
 import RoomDetail from "@/components/rooms/RoomDetail";
 import { detailRooms, rooms, site } from "@/lib/content";
+import { roomPhotos } from "@/lib/images";
 
 const slugToId = {
   "deluxe-room": "1",
@@ -38,7 +39,7 @@ async function PublishedRoom({ params }) {
   return (
     <div className="bg-[#f4f4f4] font-arial">
       <PageBanner title={detail.title} crumb="ROOMS" />
-      <RoomDetail room={detail} />
+      <RoomDetail room={detail} photos={roomPhotos[detail.photoSet]} />
       <p className="px-5 pb-12 text-center text-sm text-[#555]">
         Reservations: <a className="font-semibold text-[#633633] underline" href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
       </p>

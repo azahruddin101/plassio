@@ -4,11 +4,12 @@ import HeroCarousel from "@/components/home/HeroCarousel";
 import DiscoverSlider from "@/components/home/DiscoverSlider";
 import HomeServiceRoomCard from "@/components/home/HomeServiceRoomCard";
 import { homeIntro, homeRooms, homeStories, landmarks, testimonials, site } from "@/lib/content";
+import { discoverSlides, heroSlides, photos } from "@/lib/images";
 
 export default function HomePage() {
   return (
     <>
-      <HeroCarousel />
+      <HeroCarousel slides={heroSlides} />
 
       <section className="bg-[#f8f8f8] px-4 py-16 md:py-24">
         <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
@@ -49,7 +50,7 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-          <DiscoverSlider />
+          <DiscoverSlider slides={discoverSlides} />
         </div>
       </section>
 
@@ -93,7 +94,7 @@ export default function HomePage() {
             {homeStories.map((story) => (
               <Link key={story.href} href={story.href} className="group overflow-hidden border border-gray-100 bg-white transition hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(71,102,70,0.12)]">
                 <div className="relative h-48 overflow-hidden">
-                  <Image src={story.image} alt="" fill sizes="(min-width: 1024px) 33vw, 100vw" className="object-cover transition duration-700 group-hover:scale-105" />
+                  <Image src={photos[story.image]} alt="" fill placeholder="blur" sizes="(min-width: 1152px) 368px, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover transition duration-700 group-hover:scale-105" />
                 </div>
                 <div className="p-6">
                   <h3 className="text-2xl font-semibold text-[#633633]" style={{ fontFamily: "var(--font-cormorant), Georgia, serif" }}>{story.title}</h3>

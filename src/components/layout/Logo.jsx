@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { logoSrc } from "@/lib/images";
-import { site } from "@/lib/content";
+import { logoSrc, site } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
 export default function Logo({ tone = "dark", compact = false, imageOnly = false }) {

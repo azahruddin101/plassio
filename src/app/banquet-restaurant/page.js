@@ -1,5 +1,6 @@
 import PageBanner from "@/components/layout/PageBanner";
 import BanquetShowcase from "@/components/banquet/BanquetShowcase";
+import { banquetSlides } from "@/lib/images";
 
 export const metadata = {
   title: "Banquet & Restaurant",
@@ -13,7 +14,7 @@ export default function BanquetPage() {
     <div className="font-ui bg-[#f5f5f5] pb-16">
       <PageBanner title="BANQUET & RESTAURANT" crumb="BANQUET & RESTAURANT" />
       <div className="mt-8 lg:mt-12">
-        <BanquetShowcase />
+        <BanquetShowcase slides={banquetSlides} />
       </div>
     </div>
   );

@@ -6,8 +6,7 @@ import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 import Logo from "./Logo";
 import SocialIcons from "./SocialIcons";
-import { headerMenu, site } from "@/lib/content";
-import { logoSrc } from "@/lib/images";
+import { headerMenu, logoSrc, site } from "@/lib/content";
 import Image from "next/image";
 
 function scrollToTop() {
